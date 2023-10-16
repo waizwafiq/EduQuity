@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import {
+  Login,
+  
   Dashboard,
 
 
@@ -14,6 +16,7 @@ function App() {
       <Routes>
         {/* MAIN TABS */}
         <Route exact path="/" element={<Dashboard />} />
+        <Route exact path="/login" element={<Login />} />
 
 
         {/* 404 PAGE */}
