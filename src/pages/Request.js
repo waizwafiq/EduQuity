@@ -51,9 +51,9 @@ function Request({ themeStyles }) {
                                 <h1 className='text-2xl font-bold'>Sekolah Kebangsaan Prima 1</h1>
                             </div>
                             <div>
-                                <p className='text-sm text-gray-500 font-medium'>Km 2, Taman Primadona Satu, Off Jalan Prima Baru, Kuala Lumpur, Malaysia</p>
+                                <p className='text-sm text-gray-700 font-medium'>Km 2, Taman Primadona Satu, Off Jalan Prima Baru, Kuala Lumpur, Malaysia</p>
                             </div>
-                            <div className='grid grid-cols-2 text-gray-500 text-sm mt-3'>
+                            <div className='grid grid-cols-2 font-medium text-gray-700 text-sm mt-3'>
                                 <div>
                                     <p>📧 skprimasatu@moe.edu.my</p>
                                 </div>
@@ -63,7 +63,7 @@ function Request({ themeStyles }) {
                             </div>
                         </div>
                         <div className='w-1/2'>
-                            <p>3 km</p>
+                            <p className='font-bold text-right'>3 km</p>
                         </div>
                     </div>
 
@@ -76,10 +76,6 @@ function Request({ themeStyles }) {
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
     );
 }

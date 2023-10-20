@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {
   Login,
 
-  Dashboard, Request,
+  Dashboard, Request, RequestLog,
 
 
   _404
@@ -26,6 +26,7 @@ function App() {
           {/* MAIN TABS */}
           <Route exact path="/" element={<Dashboard />} />
           <Route exact path="/request" element={<Request />} />
+          <Route exact path="/request_log" element={<RequestLog />} />
 
 
 

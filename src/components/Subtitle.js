@@ -5,7 +5,7 @@ function Subtitle({ text, className }) {
     const colors = useColorContext();
 
     return (
-        <p className={`ml-14 mb-8 text-gray-600 text-base font-semibold ${className}`} style={{ color: colors.GreyFont }}>{text}</p>
+        <p className={`ml-14 mb-8 text-gray-700 text-base font-semibold ${className}`} style={{ color: colors.GreyFont }}>{text}</p>
     );
 }
 
