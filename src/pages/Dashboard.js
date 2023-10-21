@@ -10,10 +10,53 @@ import {
 import { useColorContext } from "../context/ColorContextProvider";
 
 // import Navbar from '../components/Navbar';
-import { Navbar, Button, Header, Subtitle, Card } from "../components";
+import {
+  Navbar,
+  Button,
+  Header,
+  Subtitle,
+  Card,
+  LabelCircle,
+} from "../components";
+
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Dashboard({ themeStyles }) {
   const colors = useColorContext();
+
+  const data = {
+    labels: ["Laptop", "Tablet", "Smartphone", "Teacher", "IT Technician"],
+    datasets: [
+      {
+        data: [10, 20, 30, 30, 20],
+        backgroundColor: [
+          colors.PieBlue,
+          colors.PieBabyBlue,
+          colors.PieLightBlue,
+          colors.PieRed,
+          colors.PieGreen,
+        ],
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          generateLabels: function (chart) {
+            return "";
+          },
+        },
+      },
+      datalabels: {
+        display: false,
+      },
+    },
+  };
+
   return (
     <div
       className="min-h-screen"
@@ -95,8 +138,44 @@ function Dashboard({ themeStyles }) {
                 </div>
               </div>
             </Card>
-            <Card className="">
-              <div>Resource %</div>
+            <Card className="py-5 px-10">
+              <div>
+                <div className="font-bold flex justify-start items-center">
+                  RESOURCES %
+                </div>
+                <div className="grid grid-cols-2">
+                  <div className=" flex items-center">
+                    <ul
+                      className="text-left font-medium"
+                      style={{ color: colors.FontGrey }}
+                    >
+                      <li className="flex items-center gap-2">
+                        <LabelCircle color={colors.PieBlue} />
+                        Laptop
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <LabelCircle color={colors.PieBabyBlue} />
+                        Tablet
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <LabelCircle color={colors.PieLightBlue} />
+                        Smartphone
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <LabelCircle color={colors.PieRed} />
+                        Teacher
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <LabelCircle color={colors.PieGreen} />
+                        IT Technician
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="h-40 flex items-center">
+                    <Doughnut data={data} options={options} />
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
 
