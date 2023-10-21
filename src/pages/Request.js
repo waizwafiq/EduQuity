@@ -19,14 +19,33 @@ function Request({ themeStyles }) {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setGlow((prevGlow) => !prevGlow);
-        }, 1000); // Change the duration as needed
+        }, 2000); // Change the duration as needed
 
         return () => {
             clearInterval(intervalId);
         };
     }, []);
 
-    
+
+    const [ripples, setRipples] = useState([]);
+    useEffect(() => {
+        // Create a new ripple every 5 seconds
+        const intervalId = setInterval(() => {
+            // Add a new ripple
+            setRipples([...ripples, {}]);
+
+            // Remove the ripple after the animation finishes (1 second)
+            setTimeout(() => {
+                setRipples(ripples.slice(1));
+            }, 1000);
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [ripples]);
+
+
     return (
         <div className="min-h-screen" style={{ ...themeStyles, backgroundColor: colors.BGGrey }}>
             <Navbar />
@@ -44,23 +63,25 @@ function Request({ themeStyles }) {
             {/* <div className="mx-14 text-center grid grid-cols-2 gap-x-3 md:grid-cols-1 lg:grid-cols-3" style={{ height: '' }}> */}
             <div className="mx-14 text-center pb-8 grid grid-cols-5" style={{ height: '' }}>
                 <div>
-
+                    <p className='text-left font-medium'>Note: The closer the school icon to the center, the better choice for borrowing resources!</p>
                 </div>
                 <div className='flex items-center justify-center col-span-3'>
-                    <div className="relative rounded-full" style={{ width: '750px', height: '750px' }}>
+                    <div className="relative" style={{ width: '750px', height: '750px' }}>
+
+
                         {/* Outermost Ring */}
                         <div className="z-0 w-full h-full bg-indigo-600 rounded-full absolute"></div>
 
                         {/* Second Ring (inner) */}
                         <div
                             style={{ width: '70%', height: '70%' }}
-                            className="z-20 bg-indigo-500 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                            className="z-10 bg-indigo-500 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                         ></div>
 
                         {/* Third Ring (inner) */}
                         <div
                             style={{ width: '40%', height: '40%' }}
-                            className="z-40 bg-indigo-400 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                            className="z-20 bg-indigo-400 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                         ></div>
 
                         {/* Innermost Ring */}
@@ -71,7 +92,15 @@ function Request({ themeStyles }) {
                             <img src={logo_no_text} alt="Logo" />
                         </div>
 
-
+                        {/* Ripple Effect Div */}
+                        {ripples.map((ripple, index) => (
+                            <div
+                                key={index}
+                                className="z-20 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                                style={{ width: '10%', height: '10%', transform: 'translate(5%, 10%)' }}
+                            >
+                            </div>
+                        ))}
 
 
                         {/* LOGO HERE */}
