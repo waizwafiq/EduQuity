@@ -130,7 +130,9 @@ function Dashboard({ themeStyles }) {
                     <li>
                       • Predicted Maintenance Required: None in the next 30 days
                     </li>
-                    <li>• Last Maintenance: 45 days ago</li>
+                    <li>
+                      • Last Maintenance: 45 days ago
+                    </li>
                     <li>
                       • Usage Patterns: High, especially during exam periods
                     </li>
