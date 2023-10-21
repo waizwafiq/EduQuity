@@ -21,6 +21,9 @@ export function ColorContextProvider({ children }) {
     PieLightBlue: "#01B4F9",
     PieRed: "#F26A73",
     PieGreen: "#25CEBC",
+    PercentLabelGreen: "#00b294",
+    PercentLabelRed: "#da3801",
+    BGDarkerGrey: "#E1DFF6",
     // Add more color values as needed
   };
 

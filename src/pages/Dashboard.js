@@ -5,6 +5,11 @@ import {
   logo_with_text,
   bg_school,
   logo_school,
+  laptop,
+  tablet,
+  smartphone,
+  itteacher,
+  ittechnician,
 } from "../assets";
 
 import { useColorContext } from "../context/ColorContextProvider";
@@ -17,6 +22,8 @@ import {
   Subtitle,
   Card,
   LabelCircle,
+  ResourceCard,
+  ClickableCard,
 } from "../components";
 
 import { Doughnut } from "react-chartjs-2";
@@ -130,9 +137,7 @@ function Dashboard({ themeStyles }) {
                     <li>
                       • Predicted Maintenance Required: None in the next 30 days
                     </li>
-                    <li>
-                      • Last Maintenance: 45 days ago
-                    </li>
+                    <li>• Last Maintenance: 45 days ago</li>
                     <li>
                       • Usage Patterns: High, especially during exam periods
                     </li>
@@ -182,24 +187,36 @@ function Dashboard({ themeStyles }) {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <Card className="">
-              <div>Resource %</div>
-            </Card>
-            <Card className="">
-              <div>Resource %</div>
-            </Card>
-            <Card className="">
-              <div>Resource %</div>
-            </Card>
+            <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" />
+            </ClickableCard>
+            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ResourceCard icon={tablet} iconTitle="TABLET" width="140" />
+            </ClickableCard>
+            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ResourceCard
+                icon={smartphone}
+                iconTitle="SMARTPHONE"
+                width="140"
+              />
+            </ClickableCard>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <Card className="">
-              <div>Resource %</div>
-            </Card>
-            <Card className="">
-              <div>Resource %</div>
-            </Card>
+            <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ResourceCard
+                icon={itteacher}
+                iconTitle="IT TEACHER"
+                width="140"
+              />
+            </ClickableCard>
+            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ResourceCard
+                icon={ittechnician}
+                iconTitle="IT TECHNICIAN"
+                width="140"
+              />
+            </ClickableCard>
           </div>
         </div>
         <Card className="mb-4">
