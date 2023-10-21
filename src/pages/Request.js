@@ -65,6 +65,7 @@ function Request({ themeStyles }) {
                 <div>
                     <p className='text-left font-medium'>Note: The closer the school icon to the center, the better choice for borrowing resources!</p>
                 </div>
+
                 <div className='flex items-center justify-center col-span-3'>
                     <div className="relative" style={{ width: '750px', height: '750px' }}>
 
@@ -116,39 +117,7 @@ function Request({ themeStyles }) {
                             className={`z-50 absolute h-14 w-14 rounded-full ${glow ? 'glow' : ''}`}
                             style={{ top: '60%', left: '35%', transform: 'translate(-50%, -50%)' }}
                         >
-                            <div className='hover:cursor-pointer rounded-full bg-gray-300 flex items-center justify-center' style={{ height: '100%', width: '100%' }}>
-                                <img src={logo_school} alt="Your Image" className="h-10 w-10" />
-                            </div>
-                        </div>
-                        <div
-                            className={`z-50 absolute h-14 w-14 rounded-full ${glow ? 'glow' : ''}`}
-                            style={{ top: '80%', left: '50%', transform: 'translate(-50%, -50%)' }}
-                        >
-                            <div className='hover:cursor-pointer rounded-full bg-gray-300 flex items-center justify-center' style={{ height: '100%', width: '100%' }}>
-                                <img src={logo_school} alt="Your Image" className="h-10 w-10" />
-                            </div>
-                        </div>
-                        <div
-                            className={`z-50 absolute h-14 w-14 rounded-full ${glow ? 'glow' : ''}`}
-                            style={{ top: '30%', left: '30%', transform: 'translate(-50%, -50%)' }}
-                        >
-                            <div className='hover:cursor-pointer rounded-full bg-gray-300 flex items-center justify-center' style={{ height: '100%', width: '100%' }}>
-                                <img src={logo_school} alt="Your Image" className="h-10 w-10" />
-                            </div>
-                        </div>
-                        <div
-                            className={`z-50 absolute h-14 w-14 rounded-full ${glow ? 'glow' : ''}`}
-                            style={{ top: '10%', left: '70%', transform: 'translate(-50%, -50%)' }}
-                        >
-                            <div className='hover:cursor-pointer rounded-full bg-gray-300 flex items-center justify-center' style={{ height: '100%', width: '100%' }}>
-                                <img src={logo_school} alt="Your Image" className="h-10 w-10" />
-                            </div>
-                        </div>
-                        <div
-                            className={`z-50 absolute h-14 w-14 rounded-full ${glow ? 'glow' : ''}`}
-                            style={{ top: '50%', left: '70%', transform: 'translate(-50%, -50%)' }}
-                        >
-                            <div className='hover:cursor-pointer rounded-full bg-gray-300 flex items-center justify-center' style={{ height: '100%', width: '100%' }}>
+                            <div className='bg-white bg-opacity-70 hover:cursor-pointer rounded-full flex items-center justify-center' style={{ height: '100%', width: '100%' }}>
                                 <img src={logo_school} alt="Your Image" className="h-10 w-10" />
                             </div>
                         </div>
