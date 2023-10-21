@@ -10,3 +10,5 @@ export { default as LabelCircle } from "../components/LabelCircle";
 export { default as ResourceCard } from "../components/ResourceCard";
 export { default as ClickableCard } from "../components/ClickableCard";
 export { default as UpdateModal } from "../components/UpdateModal";
+export { default as RecordRow } from "../components/RecordRow";
+export { default as ResourceLogDash } from "../components/ResourceLogDash";

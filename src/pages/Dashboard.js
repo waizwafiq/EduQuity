@@ -24,6 +24,7 @@ import {
   LabelCircle,
   ResourceCard,
   ClickableCard,
+  ResourceLogDash,
 } from "../components";
 
 import { Doughnut } from "react-chartjs-2";
@@ -220,7 +221,7 @@ function Dashboard({ themeStyles }) {
           </div>
         </div>
         <Card className="mb-4">
-          <div>Resource %</div>
+          <ResourceLogDash />
         </Card>
       </div>
     </div>
