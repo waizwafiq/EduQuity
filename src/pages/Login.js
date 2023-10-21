@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    logo_no_text, logo_with_text, bg_school, logo_school,
+    logo_no_text, logo_with_text, login_
 } from '../assets';
 
 import Button from '../components/Button';
@@ -12,8 +12,10 @@ function Login({ themeStyles }) {
 
     return (
         <div className="flex h-screen">
-            <div className="hidden md:block w-1/2 bg-white p-4 rounded" style={{ backgroundColor: colors.BGGrey }}>
+            <div className="hidden md:block w-1/2 bg-white rounded" style={{ backgroundColor: colors.BGGrey }}>
                 {/* LEFT SIDE - Visible on screens with a minimum width of md (medium) */}
+                <img className=" border-r-3 border-black" src={login_} style={{ height: '100%', objectFit: 'cover' }} />
+
             </div>
             <div className="w-full md:w-1/2 bg-white p-4 rounded flex items-center justify-center" style={{ backgroundColor: colors.BGGrey }}>
                 <div className="bg-white p-4 rounded-xl shadow-lg">
@@ -63,6 +65,7 @@ function Login({ themeStyles }) {
                             <Button
                                 text="LOGIN"
                                 type='submit'
+                                linkTo='/'
                             />
                         </div>
                     </div>

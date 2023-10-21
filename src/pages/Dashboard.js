@@ -3,8 +3,7 @@ import React from "react";
 import {
   logo_no_text,
   logo_with_text,
-  bg_school,
-  logo_school,
+  petaling1, bg_petaling1,
 } from "../assets";
 
 import { useColorContext } from "../context/ColorContextProvider";
@@ -84,7 +83,7 @@ function Dashboard({ themeStyles }) {
           >
             <div className="flex justify-center items-center">
               <img
-                src={logo_school}
+                src={petaling1}
                 className="w-auto h-48 p-10"
                 alt="School Logo"
               />
