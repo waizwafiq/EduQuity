@@ -10,7 +10,7 @@ function Navbar() {
 
     const links = [
         { path: '/', text: '👩‍💻 School Inventory' },
-        { path: '/request', text: '📦 Request Resource' },
+        { path: '/request', text: '📦 Resource Radar' },
         { path: '/request_log', text: '📂 Request Log' },
     ];
 
