@@ -16,6 +16,11 @@ export function ColorContextProvider({ children }) {
     BGCardGrey: "#D9D9D9",
     FontGrey: "#686E7B",
     FontGreen: "#19B15E",
+    PieBlue: "#6259CA",
+    PieBabyBlue: "#53CAED",
+    PieLightBlue: "#01B4F9",
+    PieRed: "#F26A73",
+    PieGreen: "#25CEBC",
     // Add more color values as needed
   };
 
