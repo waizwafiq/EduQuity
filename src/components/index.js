@@ -1,4 +1,3 @@
-// COMPONENTS
 export { default as Navbar } from "../components/Navbar";
 export { default as Header } from "../components/Header";
 export { default as Footer } from "../components/Footer";
@@ -12,3 +11,5 @@ export { default as ClickableCard } from "../components/ClickableCard";
 export { default as UpdateModal } from "../components/UpdateModal";
 export { default as RecordRow } from "../components/RecordRow";
 export { default as ResourceLogDash } from "../components/ResourceLogDash";
+export { default as GlowNode } from "../components/GlowNode";
+export { default as PopUp } from "../components/PopUp";
