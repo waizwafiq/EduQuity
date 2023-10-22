@@ -105,10 +105,11 @@ function Dashboard({ themeStyles }) {
 
               <div className="grid grid-cols-3">
                 <p className="col-span-2 text-sm text-gray-700 font-medium">
+                  <h1 className="font-bold text-gray-700 text-base">Address</h1>
                   Km 3, Taman Primadona Dua, Off Jalan Prima Lama, Kuala Lumpur,
                   Malaysia
                 </p>
-                <p className="font-bold text-right pr-8">3.5 km</p>
+                <p className="font-bold text-right pr-8">📍 3.5 km</p>
               </div>
               <div className="grid grid-cols-2 font-medium text-gray-700 text-sm mt-3">
                 <div>
