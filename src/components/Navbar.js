@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import {
-    logo_no_text, logo_with_text, bg_school, logo_school,
+    logo_no_text, logo_with_text, portrait,
 } from '../assets';
 
 function Navbar() {
@@ -10,7 +10,7 @@ function Navbar() {
 
     const links = [
         { path: '/', text: '👩‍💻 School Inventory' },
-        { path: '/request', text: '📦 Resource Radar' },
+        { path: '/request', text: '🧭 Resource Radar' },
         { path: '/request_log', text: '📂 Request Log' },
     ];
 
@@ -35,9 +35,11 @@ function Navbar() {
                     </ul>
                 </div>
                 <div className='grid grid-cols-3 gap-x-5'>
-                    <div className="h-8 w-8 rounded-full bg-blue-500"></div>
-                    <div className="h-8 w-8 rounded-full bg-blue-500"></div>
-                    <div className="h-8 w-8 rounded-full bg-blue-500"></div>
+                    {/* <div className="h-8 w-8 rounded-full bg-blue-500"></div>
+                    <div className="h-8 w-8 rounded-full bg-blue-500"></div> */}
+                    <div></div>
+                    <div></div>
+                    <img src={portrait} className='h-10 w-10 rounded-full hover:cursor-pointer' />
                 </div>
             </div>
         </nav>

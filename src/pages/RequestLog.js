@@ -10,6 +10,10 @@ import {
   RecordRow,
 } from "../components";
 
+import {
+  upcoming
+} from '../assets';
+
 function RequestLog({ themeStyles }) {
   const colors = useColorContext();
   return (
@@ -22,16 +26,11 @@ function RequestLog({ themeStyles }) {
       {/* <div className="bg-white ml-3 mr-3 p-6 rounded-lg shadow-lg text-center"> */}
       <div className="ml-8 mr-8 pl-6 pr-6 pt-6 pb-2 flex justify-between items-center">
         <Header text="Request Logs" />
-        {/* <Button
-                    text='Download Report'
-                    className='text-base'
-                    rounded={false} /> */}
       </div>
       <Subtitle text="Find nearby schools and request resources as needed." />
-      <div className="ml-14 mr-14 pl-6 pr-6 pt-6 pb-2 flex justify-between items-center bg-white h-[60rem] rounded-lg">
-        <div>
-          <RecordRow />
-        </div>
+      <h1 className="text-center font-bold text-4xl">Upcoming! 🛠️</h1>
+      <div className="flex justify-center align-center my-8">
+        <img src={upcoming} style={{ width: '80%' }} className="mb-8"/>
       </div>
     </div>
   );

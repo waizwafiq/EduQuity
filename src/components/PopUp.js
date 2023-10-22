@@ -1,11 +1,64 @@
 import React, { useState, useEffect } from 'react';
 
 import { useColorContext } from '../context/ColorContextProvider'; // Import the hook
-import { bg_petaling1, petaling1 } from '../assets';
+import {
+    logo_no_text,
+    logo_with_text,
+    bg_petaling1,
+    petaling1,
+    laptop,
+    tablet,
+    smartphone,
+    itteacher,
+    ittechnician,
+} from "../assets";
+
+import {
+    Navbar,
+    Button,
+    Header,
+    Subtitle,
+    Card,
+    LabelCircle,
+    ResourceCard,
+    ClickableCard2,
+    ResourceLogDash,
+} from "../components";
+import { Doughnut } from "react-chartjs-2";
 
 function PopUp({ bgSchool, logoSchool, isVisible, toggleVisibility }) {
     const colors = useColorContext();
 
+    const data = {
+        labels: ["Laptop", "Tablet", "Smartphone", "Teacher", "IT Technician"],
+        datasets: [
+            {
+                data: [10, 20, 30, 30, 20],
+                backgroundColor: [
+                    colors.PieBlue,
+                    colors.PieBabyBlue,
+                    colors.PieLightBlue,
+                    colors.PieRed,
+                    colors.PieGreen,
+                ],
+            },
+        ],
+    };
+
+    const options = {
+        plugins: {
+            legend: {
+                labels: {
+                    generateLabels: function (chart) {
+                        return "";
+                    },
+                },
+            },
+            datalabels: {
+                display: false,
+            },
+        },
+    };
     // const [isVisible, setIsVisible] = useState(false);
 
     // const toggleVisibility = () => {
@@ -53,7 +106,7 @@ function PopUp({ bgSchool, logoSchool, isVisible, toggleVisibility }) {
             document.removeEventListener('keydown', handleEscapeKey);
         };
     }, []);
-    
+
     return (
         <div className='overflow-y-auto'>
             <div style={overlayStyle} onClick={toggleVisibility}></div>
@@ -149,7 +202,78 @@ function PopUp({ bgSchool, logoSchool, isVisible, toggleVisibility }) {
                                 </div>
 
                                 :
-                                <div>Hello</div>
+                                <div>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        <ClickableCard2 className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                                            <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current="12" required="15" />
+                                        </ClickableCard2>
+                                        <ClickableCard2 className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                                            <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current="15" required="12" />
+                                        </ClickableCard2>
+                                        <ClickableCard2 className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                                            <ResourceCard
+                                                icon={smartphone}
+                                                iconTitle="SMARTPHONE"
+                                                width="140" current="72" required="67"
+                                            />
+                                        </ClickableCard2>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-3 mt-3">
+                                        <ClickableCard2 className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                                            <ResourceCard
+                                                icon={itteacher}
+                                                iconTitle="IT TEACHER"
+                                                width="140" current="11" required="13"
+                                            />
+                                        </ClickableCard2>
+                                        <ClickableCard2 className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                                            <ResourceCard
+                                                icon={ittechnician}
+                                                iconTitle="IT TECHNICIAN"
+                                                width="140" current="17" required="17"
+                                            />
+                                        </ClickableCard2>
+                                        <Card className="py-5 px-10">
+                                            <div>
+                                                <div className="font-bold flex justify-start items-center">
+                                                    RESOURCES %
+                                                </div>
+                                                <div className="grid grid-cols-2">
+                                                    <div className=" flex items-center">
+                                                        <ul
+                                                            className="text-left font-medium"
+                                                            style={{ color: colors.FontGrey }}
+                                                        >
+                                                            <li className="flex items-center gap-2">
+                                                                <LabelCircle color={colors.PieBlue} />
+                                                                Laptop
+                                                            </li>
+                                                            <li className="flex items-center gap-2">
+                                                                <LabelCircle color={colors.PieBabyBlue} />
+                                                                Tablet
+                                                            </li>
+                                                            <li className="flex items-center gap-2">
+                                                                <LabelCircle color={colors.PieLightBlue} />
+                                                                Smartphone
+                                                            </li>
+                                                            <li className="flex items-center gap-2">
+                                                                <LabelCircle color={colors.PieRed} />
+                                                                Teacher
+                                                            </li>
+                                                            <li className="flex items-center gap-2">
+                                                                <LabelCircle color={colors.PieGreen} />
+                                                                IT Technician
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="h-40 flex items-center">
+                                                        <Doughnut data={data} options={options} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    </div>
+                                </div>
                             }
                         </div>
                     </div>

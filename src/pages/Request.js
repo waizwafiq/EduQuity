@@ -134,18 +134,6 @@ function Request({ themeStyles }) {
 
 
                         {/* LOGO HERE */}
-                        {/* <div>
-                            {showElement && (
-                                <div
-                                    className={`z-50 absolute h-14 w-14 rounded-full glow`}
-                                    style={{ top: '60%', left: '35%', transform: 'translate(-50%, -50%)', animation: 'riseUp 1s ease forwards' }}
-                                >
-                                    <div className='bg-white bg-opacity-70 hover:cursor-pointer rounded-full flex items-center justify-center' style={{ height: '100%', width: '100%' }}>
-                                        <img src={logo_school} alt="Your Image" className="h-10 w-10" />
-                                    </div>
-                                </div>
-                            )}
-                        </div> */}
                         <GlowNode top="10%" left="35%" imgSrc={petaling1} showElement={showElement} glow={true} onClick={togglePopupVisibility} />
                         <GlowNode top="62%" left="60%" imgSrc={pandan_jaya} showElement={showElement} glow={true} onClick={togglePopupVisibility} />
                         <GlowNode top="70%" left="15%" imgSrc={seksyen19} showElement={showElement} glow={true} onClick={togglePopupVisibility} />

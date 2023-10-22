@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    logo_no_text, logo_with_text, bg_school, logo_school,
+    logo_no_text, logo_with_text, bg_petaling1, petaling1,
 } from '../assets';
 
 import { useColorContext } from '../context/ColorContextProvider'; // Import the hook
@@ -40,10 +40,10 @@ function Request({ themeStyles }) {
                 ></iframe>
 
                 <div className='col-span-2' style={{ backgroundColor: colors.BGCardGrey, borderRadius: '20px' }}>
-                    <img src={bg_school} alt="School Background" />
+                    <img src={bg_petaling1} alt="School Background" />
                     <div className='bg-white relative mx-8 rounded flex items-center grid grid-cols-5' style={{ top: '-85px', height: '145px', borderRadius: '20px' }}>
                         <div className="border-r-2 border-black border-opacity-50">
-                            <img src={logo_school} style={{ height: '100%' }} className="mx-5" alt="School Logo" />
+                            <img src={petaling1} style={{ height: '100%' }} className="mx-5" alt="School Logo" />
                         </div>
 
                         <div className='col-span-4 text-left px-4 grid grid-rows-3'>

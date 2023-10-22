@@ -4,8 +4,8 @@ import React from "react";
 import {
   logo_no_text,
   logo_with_text,
-  bg_school,
-  logo_school,
+  bg_petaling1,
+  petaling1,
   laptop,
   tablet,
   smartphone,
@@ -93,7 +93,7 @@ function Dashboard({ themeStyles }) {
           >
             <div className="flex justify-center items-center">
               <img
-                src={logo_school}
+                src={petaling1}
                 className="w-auto h-48 p-10"
                 alt="School Logo"
               />
@@ -190,16 +190,16 @@ function Dashboard({ themeStyles }) {
 
           <div className="grid grid-cols-3 gap-3">
             <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" />
+              <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current="12" required="15" />
             </ClickableCard>
             <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={tablet} iconTitle="TABLET" width="140" />
+              <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current="15" required="12" />
             </ClickableCard>
             <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
               <ResourceCard
                 icon={smartphone}
                 iconTitle="SMARTPHONE"
-                width="140"
+                width="140" current="72" required="67"
               />
             </ClickableCard>
           </div>
@@ -209,14 +209,14 @@ function Dashboard({ themeStyles }) {
               <ResourceCard
                 icon={itteacher}
                 iconTitle="IT TEACHER"
-                width="140"
+                width="140" current="11" required="13"
               />
             </ClickableCard>
             <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
               <ResourceCard
                 icon={ittechnician}
                 iconTitle="IT TECHNICIAN"
-                width="140"
+                width="140" current="17" required="17"
               />
             </ClickableCard>
           </div>

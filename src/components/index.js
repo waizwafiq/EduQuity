@@ -13,3 +13,6 @@ export { default as RecordRow } from "../components/RecordRow";
 export { default as ResourceLogDash } from "../components/ResourceLogDash";
 export { default as GlowNode } from "../components/GlowNode";
 export { default as PopUp } from "../components/PopUp";
+
+export { default as ClickableCard2 } from "../components/ClickableCard2";
+export { default as RequestModal } from "../components/RequestModal";

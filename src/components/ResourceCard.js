@@ -35,7 +35,7 @@ function PercentLabelDown({ number }) {
   );
 }
 
-function ResourceCard({ icon, iconTitle, width }) {
+function ResourceCard({ icon, iconTitle, width, current, required}) {
   const colors = useColorContext();
   return (
     <div className="grid grid-cols-2 h-full ">
@@ -49,8 +49,8 @@ function ResourceCard({ icon, iconTitle, width }) {
             CURRENT RESOURCES
           </div>
           <div className="grid grid-cols-2 items-center gap-2">
-            <div className="font-extrabold text-6xl">77</div>
-            <PercentLabelDown number="-18" />
+            <div className="font-extrabold text-6xl">{current}</div>
+            <PercentLabelDown number="16" />
           </div>
         </div>
         <div className="flex flex-col items-center justify-start">
@@ -58,8 +58,8 @@ function ResourceCard({ icon, iconTitle, width }) {
             REQUIRED RESOURCES
           </div>
           <div className="grid grid-cols-2 items-center gap-2">
-            <div className="font-extrabold text-6xl">77</div>
-            <PercentLabel number="+18" />
+            <div className="font-extrabold text-6xl">{required}</div>
+            <PercentLabel number="23" />
           </div>
         </div>
       </div>
