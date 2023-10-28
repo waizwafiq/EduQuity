@@ -6,10 +6,23 @@ import {
 import Button from '../components/Button';
 
 import { useColorContext } from '../context/ColorContextProvider';
-
+import supabaseClient from './utils/supabase';
 function Login({ themeStyles }) {
     const colors = useColorContext();
-
+    
+    const [credentials,setCredentials] = React.useState({
+        email : '',
+        password : ''
+    })
+    const handleLogin = async () => {
+        const {data, error}=await supabaseClient.auth.signInWithPassword({email : credentials.email, password : credentials.password})
+        if(data){
+            supabaseClient.auth.setSession({
+                access_token : data.session.access_token,
+                refresh_token : data.session.refresh_token
+            })
+        }
+    }
     return (
         <div className="flex h-screen">
             <div className="hidden md:block w-1/2 bg-white rounded" style={{ backgroundColor: colors.BGGrey }}>
@@ -48,6 +61,7 @@ function Login({ themeStyles }) {
                                 id="email"
                                 type="email"
                                 placeholder="Email"
+                                onChange={(e)=>{credentials.email=e.target.value}}
                             />
                         </div>
                         <div className="mb-6">
@@ -59,13 +73,14 @@ function Login({ themeStyles }) {
                                 id="password"
                                 type="password"
                                 placeholder="Password"
+                                onChange={(e)=>{credentials.password=e.target.value}}
                             />
                         </div>
                         <div className='flex justify-center'>
                             <Button
                                 text="LOGIN"
                                 type='submit'
-                                linkTo='/'
+                                onClick={handleLogin}
                             />
                         </div>
                     </div>
