@@ -16,7 +16,7 @@ import supabaseClient from './pages/utils/supabase';
 import {
   Footer,
 } from './components';
-import { SessionContextProvider } from './context/SessionContextProvider';
+
 
 function App() {
   const [session, setSession] = React.useState(null);
@@ -40,7 +40,7 @@ function App() {
   
   
   return session ?(
-    <SessionContextProvider>
+    
       <ColorContextProvider>
         <Router>
           <Routes>
@@ -58,7 +58,7 @@ function App() {
         </Router>
         <Footer/>
       </ColorContextProvider>
-    </SessionContextProvider>
+    
   ):(<ColorContextProvider>
     <Login />
    </ColorContextProvider>)
