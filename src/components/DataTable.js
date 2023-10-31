@@ -1,0 +1,212 @@
+import * as React from "react";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import CircleIcon from "@mui/icons-material/Circle";
+import Box from "@mui/material/Box";
+
+const renderCellType = ({ row }) => {
+  return (
+    <span
+      className={`py-1 w-[80px] rounded-[4.94px] text-center ${
+        row.type === "Export"
+          ? "text-[#FF2E9F] bg-[#FF7CCB]/[.47]"
+          : "text-[#2E42FF] bg-[#7C89FF]/[.47]"
+      }`}
+    >
+      {row.type}
+    </span>
+  );
+};
+const renderCellStatus = ({ row }) => {
+  return (
+    <span
+      className={`flex justify-center items-center gap-2 py-1 px-4 rounded-[4.94px] text-center ${
+        row.status === "Pending" ? "text-[#FF8A00] bg-[#FFC47E]/[.47]" : ""
+      } ${
+        row.status === "Processing" ? "text-[#FF5C00] bg-[#FFAB7C]/[.47]" : ""
+      } ${
+        row.status === "Transporting" ? "text-[#8F00FF] bg-[#C77EFF]/[.47]" : ""
+      } ${
+        row.status === "Completed" ? "text-[#00DE0A] bg-[#7CFF82]/[.47]" : ""
+      } ${
+        row.status === "Rejected" ? "text-[#FF0000] bg-[#FF7C7C]/[.47]" : ""
+      }`}
+    >
+      <CircleIcon sx={{ fontSize: "8px" }} /> {row.status}
+    </span>
+  );
+};
+
+const columns = [
+  {
+    field: "school",
+    headerName: "School",
+    width: 400,
+    // width: "25%",
+    headerAlign: "center",
+    // align: "center",
+    renderHeader: () => <BoldHeader value="School" />,
+  },
+  {
+    field: "resource",
+    headerName: "Resource",
+    width: 150,
+    // width: "12.5%",
+    headerAlign: "center",
+    align: "center",
+    renderHeader: () => <BoldHeader value="Resource" />,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    width: 150,
+    // width: "12.5%",
+    headerAlign: "center",
+    align: "center",
+    renderHeader: () => <BoldHeader value="Type" />,
+    renderCell: renderCellType,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 150,
+    // width: "12.5%",
+    headerAlign: "center",
+    align: "center",
+    renderHeader: () => <BoldHeader value="Status" />,
+    renderCell: renderCellStatus,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    type: "number",
+    width: 130,
+    // width: "12.5%",
+    headerAlign: "center",
+    align: "center",
+    renderHeader: () => <BoldHeader value="Quantity" />,
+  },
+  {
+    field: "requestdate",
+    headerName: "Request Date",
+    width: 150,
+    // width: "12.5%",
+    headerAlign: "center",
+    align: "center",
+    renderHeader: () => <BoldHeader value="Request Date" />,
+  },
+  {
+    field: "lastupdated",
+    headerName: "Last Updated",
+    width: 150,
+    // width: "12.5%",
+    headerAlign: "center",
+    align: "center",
+    renderHeader: () => <BoldHeader value="Last Updated" />,
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    width: 130,
+    // width: "12.5%",
+    valueGetter: (params) => `${params.row.id || ""}`,
+    headerAlign: "center",
+    align: "center",
+    renderHeader: () => <BoldHeader value="Action" />,
+  },
+];
+
+const rows = [
+  {
+    id: 1,
+    school: "Sekolah Kebangsaan Wawasan",
+    resource: "Tablet",
+    type: "Export",
+    status: "Pending",
+    quantity: 100,
+    requestdate: "18/09/2023",
+    lastupdated: "19/09/2023",
+  },
+  {
+    id: 2,
+    school: "Sekolah Kebangsaan Wawasan",
+    resource: "Tablet",
+    type: "Import",
+    status: "Processing",
+    quantity: 100,
+    requestdate: "18/09/2023",
+    lastupdated: "19/09/2023",
+  },
+  {
+    id: 3,
+    school: "Sekolah Kebangsaan Wawasan",
+    resource: "Tablet",
+    type: "Export",
+    status: "Transporting",
+    quantity: 100,
+    requestdate: "18/09/2023",
+    lastupdated: "19/09/2023",
+  },
+  {
+    id: 4,
+    school: "Sekolah Kebangsaan Wawasan",
+    resource: "Tablet",
+    type: "Import",
+    status: "Completed",
+    quantity: 100,
+    requestdate: "18/09/2023",
+    lastupdated: "19/09/2023",
+  },
+  {
+    id: 5,
+    school: "Sekolah Kebangsaan Wawasan",
+    resource: "Tablet",
+    type: "Import",
+    status: "Rejected",
+    quantity: 100,
+    requestdate: "18/09/2023",
+    lastupdated: "19/09/2023",
+  },
+];
+
+const BoldHeader = ({ value }) => {
+  return <strong className="text-gray-600">{value}</strong>;
+};
+
+function QuickSearchToolbar() {
+  return (
+    <Box
+      sx={{
+        p: 0.5,
+        pb: 0,
+      }}
+    >
+      <GridToolbarQuickFilter
+        quickFilterParser={(searchInput) =>
+          searchInput
+            .split(",")
+            .map((value) => value.trim())
+            .filter((value) => value !== "")
+        }
+      />
+    </Box>
+  );
+}
+
+export default function DataTable() {
+  return (
+    <div style={{ height: 500, width: "100%" }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 5 },
+          },
+        }}
+        pageSizeOptions={[5, 10]}
+        // checkboxSelection
+        slots={{ toolbar: QuickSearchToolbar }}
+      />
+    </div>
+  );
+}

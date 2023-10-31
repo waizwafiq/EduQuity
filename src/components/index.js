@@ -16,3 +16,4 @@ export { default as PopUp } from "../components/PopUp";
 
 export { default as ClickableCard2 } from "../components/ClickableCard2";
 export { default as RequestModal } from "../components/RequestModal";
+export { default as DataTable } from "../components/DataTable";
