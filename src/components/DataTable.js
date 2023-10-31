@@ -175,9 +175,12 @@ const BoldHeader = ({ value }) => {
 function QuickSearchToolbar() {
   return (
     <Box
+      className="border-solid border-2"
       sx={{
-        p: 0.5,
-        pb: 0,
+        m: "1rem auto",
+        borderRadius: "4px",
+        px: "20px",
+        py: "5px",
       }}
     >
       <GridToolbarQuickFilter
