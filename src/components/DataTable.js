@@ -2,6 +2,8 @@ import * as React from "react";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import CircleIcon from "@mui/icons-material/Circle";
 import Box from "@mui/material/Box";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
 
 const renderCellType = ({ row }) => {
   return (
@@ -16,6 +18,23 @@ const renderCellType = ({ row }) => {
     </span>
   );
 };
+
+const renderActionButton = ({ row }) => {
+  return (
+    <div className="flex gap-2">
+      {/* <DoneIcon className="text-[#03A400] hover:bg-[#D0FFCF] hover:cursor-pointer rounded-[5px]" /> */}
+      <DoneIcon
+        className={`${
+          row.status === "Rejected"
+            ? "text-[#000000]/[.50]"
+            : "text-[#03A400] hover:bg-[#D0FFCF] hover:cursor-pointer rounded-[5px]"
+        }`}
+      />
+      <CloseIcon className="text-[#C00000] hover:bg-[#FFCBCB] hover:cursor-pointer rounded-[5px]" />
+    </div>
+  );
+};
+
 const renderCellStatus = ({ row }) => {
   return (
     <span
@@ -111,7 +130,8 @@ const columns = [
     valueGetter: (params) => `${params.row.id || ""}`,
     headerAlign: "center",
     align: "center",
-    renderHeader: () => <BoldHeader value="Action" />,
+    renderHeader: () => <BoldHeader value="" />,
+    renderCell: renderActionButton,
   },
 ];
 
@@ -190,6 +210,9 @@ function QuickSearchToolbar() {
             .map((value) => value.trim())
             .filter((value) => value !== "")
         }
+        sx={{
+          width: "500px",
+        }}
       />
     </Box>
   );
