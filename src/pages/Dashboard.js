@@ -35,24 +35,36 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Dashboard({ themeStyles }) {
   const [schoolData, setSchoolData] = React.useState()
+  const [inventoryData, setInventoryData] = React.useState([])
+
   const getSchoolData = async() => {
     const {data:userData} = await supabaseClient.auth.getUser()
-
     const {data:schoolData} = await supabaseClient.from("school").select("*").eq("email",userData?.user.email).single()
+    const {data:inventoryData} = await supabaseClient.from("resource").select("type").eq("school_id",userData?.user.id)
     setSchoolData(schoolData)
-    console.log(schoolData)
+    setInventoryData(inventoryData)
   }
 
   React.useEffect(()=>{
     getSchoolData()
-  })
+  },[])
   const colors = useColorContext();
-
+  const dataCounter = (data, typeTarget) => {
+    return data.filter((data)=>{
+      return data.type == typeTarget
+    }).length
+}
   const data = {
     labels: ["Laptop", "Tablet", "Smartphone", "Teacher", "IT Technician"],
     datasets: [
       {
-        data: [10, 20, 30, 30, 20],
+        data: [
+          dataCounter(inventoryData,1), 
+          dataCounter(inventoryData,2), 
+          dataCounter(inventoryData,3),
+          dataCounter(inventoryData,4),
+          dataCounter(inventoryData,5)
+          ],
         backgroundColor: [
           colors.PieBlue,
           colors.PieBabyBlue,
@@ -79,6 +91,7 @@ function Dashboard({ themeStyles }) {
     },
   };
 
+  
   return (
     <div
       className="min-h-screen"
@@ -203,16 +216,16 @@ function Dashboard({ themeStyles }) {
 
           <div className="grid grid-cols-3 gap-3">
             <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current="12" required="15" />
+              <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData,1)} required="15" />
             </ClickableCard>
             <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current="15" required="12" />
+              <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData,2)} required="12" />
             </ClickableCard>
             <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
               <ResourceCard
                 icon={smartphone}
                 iconTitle="SMARTPHONE"
-                width="140" current="72" required="67"
+                width="140" current={dataCounter(inventoryData,3)} required="67"
               />
             </ClickableCard>
           </div>
@@ -222,14 +235,14 @@ function Dashboard({ themeStyles }) {
               <ResourceCard
                 icon={itteacher}
                 iconTitle="IT TEACHER"
-                width="140" current="11" required="13"
+                width="140" current={dataCounter(inventoryData,4)} required="13"
               />
             </ClickableCard>
             <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
               <ResourceCard
                 icon={ittechnician}
                 iconTitle="IT TECHNICIAN"
-                width="140" current="17" required="17"
+                width="140" current={dataCounter(inventoryData,5)} required="17"
               />
             </ClickableCard>
           </div>
