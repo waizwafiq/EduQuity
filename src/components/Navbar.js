@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import {
     logo_no_text, logo_with_text, portrait,
 } from '../assets';
+import supabaseClient from '../pages/utils/supabase';
 
 function Navbar() {
     const location = useLocation();
@@ -39,7 +40,9 @@ function Navbar() {
                     <div className="h-8 w-8 rounded-full bg-blue-500"></div> */}
                     <div></div>
                     <div></div>
-                    <img src={portrait} className='h-10 w-10 rounded-full hover:cursor-pointer' />
+                    <img src={portrait} className='h-10 w-10 rounded-full hover:cursor-pointer' onClick={()=>{
+                        supabaseClient.auth.signOut()
+                    }}/>
                 </div>
             </div>
         </nav>
