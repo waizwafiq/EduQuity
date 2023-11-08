@@ -30,9 +30,22 @@ import {
 
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import supabaseClient from "./utils/supabase";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Dashboard({ themeStyles }) {
+  const [schoolData, setSchoolData] = React.useState()
+  const getSchoolData = async() => {
+    const {data:userData} = await supabaseClient.auth.getUser()
+
+    const {data:schoolData} = await supabaseClient.from("school").select("*").eq("email",userData?.user.email).single()
+    setSchoolData(schoolData)
+    console.log(schoolData)
+  }
+
+  React.useEffect(()=>{
+    getSchoolData()
+  })
   const colors = useColorContext();
 
   const data = {
@@ -93,30 +106,29 @@ function Dashboard({ themeStyles }) {
           >
             <div className="flex justify-center items-center">
               <img
-                src={petaling1}
+                src={schoolData?.image}
                 className="w-auto h-48 p-10"
                 alt="School Logo"
               />
             </div>
             <div className="col-span-4 p-6 grid grid-rows-3">
               <h1 className="text-4xl font-bold">
-                Sekolah Kebangsaan Petaling 1
+                {schoolData?.name}
               </h1>
 
               <div className="grid grid-cols-3">
                 <p className="col-span-2 text-sm text-gray-700 font-medium">
                   <h1 className="font-bold text-gray-700 text-base">Address</h1>
-                  Km 3, Taman Primadona Dua, Off Jalan Prima Lama, Kuala Lumpur,
-                  Malaysia
+                  {schoolData?.location}
                 </p>
                 <p className="font-bold text-right pr-8">📍 3.5 km</p>
               </div>
               <div className="grid grid-cols-2 font-medium text-gray-700 text-sm mt-3">
                 <div>
-                  <p>📧 skpetalingsatu@moe.edu.my</p>
+                  <p>📧 {schoolData?.email}</p>
                 </div>
                 <div>
-                  <p>📞 +6012-345678</p>
+                  <p>📞 {schoolData?.phone}</p>
                 </div>
               </div>
             </div>
