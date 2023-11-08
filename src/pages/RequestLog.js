@@ -8,11 +8,10 @@ import {
   Subtitle,
   Tabs,
   RecordRow,
+  DataTable,
 } from "../components";
 
-import {
-  upcoming
-} from '../assets';
+import { upcoming } from "../assets";
 
 function RequestLog({ themeStyles }) {
   const colors = useColorContext();
@@ -28,9 +27,11 @@ function RequestLog({ themeStyles }) {
         <Header text="Request Logs" />
       </div>
       <Subtitle text="Find nearby schools and request resources as needed." />
-      <h1 className="text-center font-bold text-4xl">Upcoming! 🛠️</h1>
+      {/* <h1 className="text-center font-bold text-4xl">Upcoming! 🛠️</h1> */}
       <div className="flex justify-center align-center my-8">
-        <img src={upcoming} style={{ width: '80%' }} className="mb-8"/>
+        <div className="mx-14 px-6 py-6 bg-white h-full w-full rounded-[20px]">
+          <DataTable />
+        </div>
       </div>
     </div>
   );
