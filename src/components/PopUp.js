@@ -32,6 +32,17 @@ function PopUp({ bgSchool, logoSchool, isVisible, toggleVisibility }) {
     const [schoolData, setSchoolData] = React.useState()
     const [inventoryData, setInventoryData] = React.useState([])
     const [requiredResources, setRequiredResources] = React.useState([])
+    const [newLog, setNewLog] = React.useState(
+        {
+            from_school: '',
+            to_school: '',
+            resource : '',
+            status : '',
+            quantity : '',
+            request_date: new Date(),
+            last_updated : new Date(),
+        }
+    )
 
     const dataCounter = (data, typeTarget) => {
         return data.filter((data) => {
@@ -54,6 +65,11 @@ function PopUp({ bgSchool, logoSchool, isVisible, toggleVisibility }) {
         const { data: school, error } = await supabaseClient.from('school').select("*").neq('real_uuid', userData.user.id).single();
         const { data: inventoryData } = await supabaseClient.from("resource").select("type").eq("school_id", school?.real_uuid)
         const { data: requiredResources } = await supabaseClient.from("required_resources").select("*").eq("school_id", school?.real_uuid)
+        
+        newLog.from_school = userData?.user.id
+        newLog.to_school = school?.real_uuid
+        newLog.status = 'Pending'
+
         setInventoryData(inventoryData)
         setSchoolData(school)
         setRequiredResources(requiredResources)
@@ -237,34 +253,34 @@ function PopUp({ bgSchool, logoSchool, isVisible, toggleVisibility }) {
                                 :
                                 <div>
                                     <div className="grid grid-cols-3 gap-3">
-                                    
-                                        <ClickableCard2 className = {`border-4 ${dataCounter(inventoryData,1)>=getRequired(requiredResources,1)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
-                                            <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData, 1)} required={getRequired(requiredResources,1)} />
+
+                                        <ClickableCard2 newLog = {newLog} type = {1} className={`border-4 ${dataCounter(inventoryData, 1) >= getRequired(requiredResources, 1) ? ('border-[#00b294]') : ('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                                            <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData, 1)} required={getRequired(requiredResources, 1)} />
                                         </ClickableCard2>
-                                        <ClickableCard2 className = {`border-4 ${dataCounter(inventoryData, 2)>=getRequired(requiredResources,2)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
-                                            <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData, 2)} required={getRequired(requiredResources,2)} />
+                                        <ClickableCard2 newLog = {newLog} type = {2} className={`border-4 ${dataCounter(inventoryData, 2) >= getRequired(requiredResources, 2) ? ('border-[#00b294]') : ('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                                            <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData, 2)} required={getRequired(requiredResources, 2)} />
                                         </ClickableCard2>
-                                        <ClickableCard2 className = {`border-4 ${dataCounter(inventoryData, 3)>=getRequired(requiredResources,3)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                                        <ClickableCard2 newLog = {newLog} type = {3} className={`border-4 ${dataCounter(inventoryData, 3) >= getRequired(requiredResources, 3) ? ('border-[#00b294]') : ('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
                                             <ResourceCard
                                                 icon={smartphone}
                                                 iconTitle="SMARTPHONE"
-                                                width="140" current={dataCounter(inventoryData, 3)} required={getRequired(requiredResources,3)}
+                                                width="140" current={dataCounter(inventoryData, 3)} required={getRequired(requiredResources, 3)}
                                             />
                                         </ClickableCard2>
                                     </div>
                                     <div className="grid grid-cols-3 gap-3 mt-3">
-                                        <ClickableCard2 className = {`border-4 ${dataCounter(inventoryData, 4)>=getRequired(requiredResources,4)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                                        <ClickableCard2 newLog = {newLog} type = {4} className={`border-4 ${dataCounter(inventoryData, 4) >= getRequired(requiredResources, 4) ? ('border-[#00b294]') : ('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
                                             <ResourceCard
                                                 icon={itteacher}
                                                 iconTitle="IT TEACHER"
-                                                width="140" current={dataCounter(inventoryData, 4)} required={getRequired(requiredResources,4)}
+                                                width="140" current={dataCounter(inventoryData, 4)} required={getRequired(requiredResources, 4)}
                                             />
                                         </ClickableCard2>
-                                        <ClickableCard2 className = {`border-4 ${dataCounter(inventoryData, 5)>=getRequired(requiredResources,5)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                                        <ClickableCard2 newLog = {newLog} type = {5} className={`border-4 ${dataCounter(inventoryData, 5) >= getRequired(requiredResources, 5) ? ('border-[#00b294]') : ('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
                                             <ResourceCard
                                                 icon={ittechnician}
                                                 iconTitle="IT TECHNICIAN"
-                                                width="140" current={dataCounter(inventoryData, 5)} required={getRequired(requiredResources,5)}
+                                                width="140" current={dataCounter(inventoryData, 5)} required={getRequired(requiredResources, 5)}
                                             />
                                         </ClickableCard2>
                                         <Card className="py-5 px-10">
