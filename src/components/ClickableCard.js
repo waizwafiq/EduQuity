@@ -11,7 +11,7 @@ function ClickableCard({ children, className }) {
   return (
     <>
       <div
-        onClick={() => setShow(true)}
+        onClick={() => setShow(false)}
         className={`rounded-2xl bg-white ${className}`}
       >
         {children}
