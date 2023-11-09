@@ -37,23 +37,37 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 function Dashboard({ themeStyles }) {
   const [schoolData, setSchoolData] = React.useState()
   const [inventoryData, setInventoryData] = React.useState([])
-
+  const [requiredResources, setRequiredResources] = React.useState([])
   const getSchoolData = async () => {
     const { data: userData } = await supabaseClient.auth.getUser()
     const { data: schoolData } = await supabaseClient.from("school").select("*").eq("email", userData?.user.email).single()
     const { data: inventoryData } = await supabaseClient.from("resource").select("type").eq("school_id", userData?.user.id)
+    const { data: requiredResources } = await supabaseClient.from("required_resources").select("*").eq("school_id", userData?.user.id)
     setSchoolData(schoolData)
     setInventoryData(inventoryData)
+    setRequiredResources(requiredResources)
+    console.log(requiredResources)
   }
 
   React.useEffect(() => {
     getSchoolData()
   }, [])
   const colors = useColorContext();
+
   const dataCounter = (data, typeTarget) => {
     return data.filter((data) => {
       return data.type == typeTarget
     }).length
+  }
+
+  const getRequired = (data, typeTarget) => {
+    let number = 0
+      data.forEach(element => {
+         if(element.type == typeTarget){
+          number = element.number_required
+         }
+      });
+      return number
   }
   const data = {
     labels: ["Laptop", "Tablet", "Smartphone", "Teacher", "IT Technician"],
@@ -217,23 +231,21 @@ function Dashboard({ themeStyles }) {
 
           <div className="grid grid-cols-3 gap-3">
             <a href="resource/1">
-              <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer" onClick={() => {
-
-              }}>
-                <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData, 1)} required="15" />
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 1)>=getRequired(requiredResources,1)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData, 1)} required={getRequired(requiredResources,1)} />
               </ClickableCard>
             </a>
             <a href="resource/2">
-              <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-                <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData, 2)} required="12" />
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 2)>=getRequired(requiredResources,2)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData, 2)} required={getRequired(requiredResources,2)} />
               </ClickableCard>
             </a>
             <a href="resource/3">
-              <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 3)>=getRequired(requiredResources,3)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
                 <ResourceCard
                   icon={smartphone}
                   iconTitle="SMARTPHONE"
-                  width="140" current={dataCounter(inventoryData, 3)} required="67"
+                  width="140" current={dataCounter(inventoryData, 3)} required={getRequired(requiredResources,3)}
                 />
               </ClickableCard>
             </a>
@@ -244,20 +256,20 @@ function Dashboard({ themeStyles }) {
 
           <div className="grid grid-cols-3 gap-3">
             <a href="resource/4">
-              <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 4)>=getRequired(requiredResources,4)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
                 <ResourceCard
                   icon={itteacher}
                   iconTitle="IT TEACHER"
-                  width="140" current={dataCounter(inventoryData, 4)} required="13"
+                  width="140" current={dataCounter(inventoryData, 4)} required={getRequired(requiredResources,4)}
                 />
               </ClickableCard>
             </a>
             <a href="resource/5">
-              <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 5)>=getRequired(requiredResources,5)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
                 <ResourceCard
                   icon={ittechnician}
                   iconTitle="IT TECHNICIAN"
-                  width="140" current={dataCounter(inventoryData, 5)} required="17"
+                  width="140" current={dataCounter(inventoryData, 5)} required={getRequired(requiredResources,5)}
                 />
               </ClickableCard>
             </a>

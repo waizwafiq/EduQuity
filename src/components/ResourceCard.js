@@ -47,19 +47,14 @@ function ResourceCard({ icon, iconTitle, width, current, required}) {
         <div className="flex flex-col items-center justify-start">
           <div className="font-bold text-sm" style={{ color: colors.FontGrey }}>
             CURRENT RESOURCES
+            <div className="font-extrabold text-6xl text-neutral-900">{current}</div>
           </div>
-          <div className="grid grid-cols-2 items-center gap-2">
-            <div className="font-extrabold text-6xl">{current}</div>
-            <PercentLabelDown number="16" />
-          </div>
+          
         </div>
         <div className="flex flex-col items-center justify-start">
           <div className="font-bold text-sm" style={{ color: colors.FontGrey }}>
             REQUIRED RESOURCES
-          </div>
-          <div className="grid grid-cols-2 items-center gap-2">
-            <div className="font-extrabold text-6xl">{required}</div>
-            <PercentLabel number="23" />
+            <div className="font-extrabold text-6xl text-neutral-900">{required}</div>
           </div>
         </div>
       </div>
