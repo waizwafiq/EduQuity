@@ -30,6 +30,7 @@ import {
 
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { useHistory } from 'react-router-dom';
 import supabaseClient from "./utils/supabase";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -37,34 +38,34 @@ function Dashboard({ themeStyles }) {
   const [schoolData, setSchoolData] = React.useState()
   const [inventoryData, setInventoryData] = React.useState([])
 
-  const getSchoolData = async() => {
-    const {data:userData} = await supabaseClient.auth.getUser()
-    const {data:schoolData} = await supabaseClient.from("school").select("*").eq("email",userData?.user.email).single()
-    const {data:inventoryData} = await supabaseClient.from("resource").select("type").eq("school_id",userData?.user.id)
+  const getSchoolData = async () => {
+    const { data: userData } = await supabaseClient.auth.getUser()
+    const { data: schoolData } = await supabaseClient.from("school").select("*").eq("email", userData?.user.email).single()
+    const { data: inventoryData } = await supabaseClient.from("resource").select("type").eq("school_id", userData?.user.id)
     setSchoolData(schoolData)
     setInventoryData(inventoryData)
   }
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     getSchoolData()
-  },[])
+  }, [])
   const colors = useColorContext();
   const dataCounter = (data, typeTarget) => {
-    return data.filter((data)=>{
+    return data.filter((data) => {
       return data.type == typeTarget
     }).length
-}
+  }
   const data = {
     labels: ["Laptop", "Tablet", "Smartphone", "Teacher", "IT Technician"],
     datasets: [
       {
         data: [
-          dataCounter(inventoryData,1), 
-          dataCounter(inventoryData,2), 
-          dataCounter(inventoryData,3),
-          dataCounter(inventoryData,4),
-          dataCounter(inventoryData,5)
-          ],
+          dataCounter(inventoryData, 1),
+          dataCounter(inventoryData, 2),
+          dataCounter(inventoryData, 3),
+          dataCounter(inventoryData, 4),
+          dataCounter(inventoryData, 5)
+        ],
         backgroundColor: [
           colors.PieBlue,
           colors.PieBabyBlue,
@@ -91,7 +92,7 @@ function Dashboard({ themeStyles }) {
     },
   };
 
-  
+
   return (
     <div
       className="min-h-screen"
@@ -215,36 +216,52 @@ function Dashboard({ themeStyles }) {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData,1)} required="15" />
-            </ClickableCard>
-            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData,2)} required="12" />
-            </ClickableCard>
-            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard
-                icon={smartphone}
-                iconTitle="SMARTPHONE"
-                width="140" current={dataCounter(inventoryData,3)} required="67"
-              />
-            </ClickableCard>
+            <a href="resource/1">
+              <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer" onClick={() => {
+
+              }}>
+                <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData, 1)} required="15" />
+              </ClickableCard>
+            </a>
+            <a href="resource/2">
+              <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData, 2)} required="12" />
+              </ClickableCard>
+            </a>
+            <a href="resource/3">
+              <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                <ResourceCard
+                  icon={smartphone}
+                  iconTitle="SMARTPHONE"
+                  width="140" current={dataCounter(inventoryData, 3)} required="67"
+                />
+              </ClickableCard>
+            </a>
+
+
+
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard
-                icon={itteacher}
-                iconTitle="IT TEACHER"
-                width="140" current={dataCounter(inventoryData,4)} required="13"
-              />
-            </ClickableCard>
-            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard
-                icon={ittechnician}
-                iconTitle="IT TECHNICIAN"
-                width="140" current={dataCounter(inventoryData,5)} required="17"
-              />
-            </ClickableCard>
+            <a href="resource/4">
+              <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                <ResourceCard
+                  icon={itteacher}
+                  iconTitle="IT TEACHER"
+                  width="140" current={dataCounter(inventoryData, 4)} required="13"
+                />
+              </ClickableCard>
+            </a>
+            <a href="resource/5">
+              <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
+                <ResourceCard
+                  icon={ittechnician}
+                  iconTitle="IT TECHNICIAN"
+                  width="140" current={dataCounter(inventoryData, 5)} required="17"
+                />
+              </ClickableCard>
+            </a>
+
           </div>
         </div>
         <Card className="mb-4">
