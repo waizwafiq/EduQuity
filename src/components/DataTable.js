@@ -1,63 +1,11 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import supabaseClient from "../pages/utils/supabase";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import CircleIcon from "@mui/icons-material/Circle";
 import Box from "@mui/material/Box";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-
-const rows = [
-  {
-    id: 1,
-    school: "Sekolah Kebangsaan Wawasan",
-    resource: "Tablet",
-    type: "Export",
-    status: "Pending",
-    quantity: 100,
-    requestdate: "18/09/2023",
-    lastupdated: "19/09/2023",
-  },
-  {
-    id: 2,
-    school: "Sekolah Kebangsaan Wawasan",
-    resource: "Tablet",
-    type: "Import",
-    status: "Processing",
-    quantity: 100,
-    requestdate: "18/09/2023",
-    lastupdated: "19/09/2023",
-  },
-  {
-    id: 3,
-    school: "Sekolah Kebangsaan Wawasan",
-    resource: "Tablet",
-    type: "Export",
-    status: "Transporting",
-    quantity: 100,
-    requestdate: "18/09/2023",
-    lastupdated: "19/09/2023",
-  },
-  {
-    id: 4,
-    school: "Sekolah Kebangsaan Wawasan",
-    resource: "Tablet",
-    type: "Import",
-    status: "Completed",
-    quantity: 100,
-    requestdate: "18/09/2023",
-    lastupdated: "19/09/2023",
-  },
-  {
-    id: 5,
-    school: "Sekolah Kebangsaan Wawasan",
-    resource: "Tablet",
-    type: "Import",
-    status: "Rejected",
-    quantity: 100,
-    requestdate: "18/09/2023",
-    lastupdated: "19/09/2023",
-  },
-];
 
 const BoldHeader = ({ value }) => {
   return <strong className="text-gray-600">{value}</strong>;
@@ -90,7 +38,97 @@ function QuickSearchToolbar() {
 }
 
 export default function DataTable() {
-  const [dataRows, setDataRows] = useState(rows);
+  const [dataRows, setDataRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchRequests = async () => {
+    //Get resource table
+    const { data: resourceType, error: err } = await supabaseClient
+      .from("resource_type")
+      .select("*");
+
+    if (err) {
+      console.error("Error fetching requests:", err);
+      return;
+    }
+
+    //Get school table
+    const { data: schoolNameObj, error: errSchool } = await supabaseClient
+      .from("school")
+      .select("*");
+
+    if (errSchool) {
+      console.error("Error fetching requests:", errSchool);
+      return;
+    }
+
+    //Get school_id associated with user
+    const { data: userData } = await supabaseClient.auth.getUser();
+
+    const schoolId = userData?.user.id;
+
+    const totalRows = [];
+
+    //Get request_log for user (from_school)
+    const { data: requestData, error: requestError } = await supabaseClient
+      .from("request_log")
+      .select("*")
+      .eq("from_school", schoolId);
+
+    if (requestError) {
+      console.error("Error fetching requests:", requestError);
+      return;
+    }
+
+    totalRows.push(...requestData);
+
+    //Get request_log for user (to_school)
+    const { data: requestData2, error: requestError2 } = await supabaseClient
+      .from("request_log")
+      .select("*")
+      .eq("to_school", schoolId);
+
+    if (requestError2) {
+      console.error("Error fetching requests:", requestError2);
+      return;
+    }
+
+    totalRows.push(...requestData2);
+
+    const fetchedRows = [];
+
+    totalRows.forEach((row) => {
+      const resource = resourceType.find((item) => item.id === row.resource);
+      const getSchoolName = (schoolID) => {
+        return schoolNameObj.find((item) => item.real_uuid === schoolID).name;
+      };
+
+      const schoolName = () => {
+        return schoolId === row.from_school
+          ? getSchoolName(row.to_school)
+          : getSchoolName(row.from_school);
+      };
+
+      const getType = schoolId === row.from_school ? "Export" : "Import";
+
+      fetchedRows.push({
+        id: row.id,
+        school: schoolName(),
+        resource: resource.name,
+        type: getType,
+        status: row.status,
+        quantity: row.quantity,
+        requestdate: row.request_date,
+        lastupdated: row.last_updated,
+      });
+    });
+    setDataRows(fetchedRows);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
 
   const handleDoneIconClick = (row) => {
     if (row.status === "Pending") {
@@ -267,7 +305,7 @@ export default function DataTable() {
   return (
     <div style={{ height: 500, width: "100%" }}>
       <DataGrid
-        rows={rows}
+        rows={dataRows}
         columns={columns}
         initialState={{
           pagination: {
@@ -277,6 +315,7 @@ export default function DataTable() {
         pageSizeOptions={[5, 10]}
         // checkboxSelection
         slots={{ toolbar: QuickSearchToolbar }}
+        loading={loading}
       />
     </div>
   );
