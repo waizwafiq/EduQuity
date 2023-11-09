@@ -121,14 +121,17 @@ export default function DataTable() {
         requestdate: row.request_date,
         lastupdated: row.last_updated,
       });
-
-      // Sort fetchedRows by lastupdated in descending order (latest to oldest)
-      fetchedRows.sort(
-        (a, b) => new Date(b.lastupdated) - new Date(a.lastupdated)
-      );
     });
+    sortTable(fetchedRows);
     setDataRows(fetchedRows);
     setLoading(false);
+  };
+
+  const sortTable = (fetchedRows) => {
+    // Sort fetchedRows by lastupdated in descending order (latest to oldest)
+    fetchedRows.sort(
+      (a, b) => new Date(b.lastupdated) - new Date(a.lastupdated)
+    );
   };
 
   useEffect(() => {
@@ -136,14 +139,27 @@ export default function DataTable() {
   }, []);
 
   const updateRequest = async (row, status) => {
+    //Get current timestamp
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split("T")[0];
+
     const { error } = await supabaseClient
       .from("request_log")
-      .update({ status: status })
+      .update({ status: status, last_updated: formattedDate })
       .eq("id", row.id);
 
-    if (error) {
+    if (!error) {
+      row.status = status;
+      row.lastupdated = formattedDate;
+
+      //Every successful row update will be pushed to the top
+      const updatedDataRows = [
+        row,
+        ...dataRows.filter((item) => item.id !== row.id),
+      ];
+      setDataRows(updatedDataRows);
+    } else {
       console.error("Error updating data:", error);
-      return;
     }
   };
 
@@ -151,28 +167,18 @@ export default function DataTable() {
     if (row.status === "Pending") {
       // Update from Pending to Processing
       updateRequest(row, "Processing");
-      row.status = "Processing";
     } else if (row.status === "Processing") {
       // Update from Processing to Transporting
       updateRequest(row, "Transporting");
-      row.status = "Transporting";
     } else if (row.status === "Transporting") {
       // Update from Transporting to Completed
       updateRequest(row, "Completed");
-      row.status = "Completed";
     }
-    // Create a copy of the dataRows to trigger a state update
-    const updatedDataRows = [...dataRows];
-    setDataRows(updatedDataRows);
   };
 
   const handleCloseIconClick = (row) => {
     // Always update to Rejected
     updateRequest(row, "Rejected");
-    row.status = "Rejected";
-    // Create a copy of the dataRows to trigger a state update
-    const updatedDataRows = [...dataRows];
-    setDataRows(updatedDataRows);
   };
 
   const renderCellType = ({ row }) => {
