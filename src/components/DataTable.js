@@ -121,6 +121,11 @@ export default function DataTable() {
         requestdate: row.request_date,
         lastupdated: row.last_updated,
       });
+
+      // Sort fetchedRows by lastupdated in descending order (latest to oldest)
+      fetchedRows.sort(
+        (a, b) => new Date(b.lastupdated) - new Date(a.lastupdated)
+      );
     });
     setDataRows(fetchedRows);
     setLoading(false);
@@ -130,15 +135,30 @@ export default function DataTable() {
     fetchRequests();
   }, []);
 
+  const updateRequest = async (row, status) => {
+    const { error } = await supabaseClient
+      .from("request_log")
+      .update({ status: status })
+      .eq("id", row.id);
+
+    if (error) {
+      console.error("Error updating data:", error);
+      return;
+    }
+  };
+
   const handleDoneIconClick = (row) => {
     if (row.status === "Pending") {
       // Update from Pending to Processing
+      updateRequest(row, "Processing");
       row.status = "Processing";
     } else if (row.status === "Processing") {
       // Update from Processing to Transporting
+      updateRequest(row, "Transporting");
       row.status = "Transporting";
     } else if (row.status === "Transporting") {
       // Update from Transporting to Completed
+      updateRequest(row, "Completed");
       row.status = "Completed";
     }
     // Create a copy of the dataRows to trigger a state update
@@ -148,6 +168,7 @@ export default function DataTable() {
 
   const handleCloseIconClick = (row) => {
     // Always update to Rejected
+    updateRequest(row, "Rejected");
     row.status = "Rejected";
     // Create a copy of the dataRows to trigger a state update
     const updatedDataRows = [...dataRows];
