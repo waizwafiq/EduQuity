@@ -39,8 +39,8 @@ function PopUp({ bgSchool, logoSchool, isVisible, toggleVisibility }) {
             resource : '',
             status : '',
             quantity : '',
-            request_date: new Date(),
-            last_updated : new Date(),
+            request_date: new Date().toISOString().substring(0,10),
+            last_updated : new Date().toISOString().substring(0,10),
         }
     )
 
