@@ -17,6 +17,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import CircleIcon from "@mui/icons-material/Circle";
 import AddResourceModal from "../components/AddResourceModal";
 import { Input, MenuItem, TextField } from "@mui/material";
+import RequiredModal from "../components/RequiredResoureModal";
 
 const ResourceType = {
     1: 'Laptop',
@@ -111,7 +112,11 @@ const Resource = ({ themeStyles }) => {
     const { id } = useParams();
     const colors = useColorContext();
     const [inventoryData, setInventoryData] = React.useState([])
+    const [requiredResources, setRequiredResources] = React.useState(0);
+    const [toUpdateRequired, setToUpdateRequired] = React.useState(0)
     const [open, setOpen] = React.useState(false)
+    const [openRequired, setOpenRequired] = React.useState(false)
+    
     const [newData, setNewData] = React.useState({
         type : id,
         serial_number : '',
@@ -119,13 +124,17 @@ const Resource = ({ themeStyles }) => {
         condition : 'GOOD',
         updated : new Date(Date.now()).toUTCString(),
     })
-    const getInventoryData = async () => {
+    const getData = async () => {
         const { data: userData } = await supabaseClient.auth.getUser()
         const { data: inventoryData } = await supabaseClient.from("resource").select("*").order('updated',{ascending:false}).eq("school_id", userData?.user.id).eq('type', id)
+        const {data : requiredNumber} = await supabaseClient.from("required_resources").select("*").eq('school_id',userData?.user.id).eq("type",id).single();
+        setRequiredResources(requiredNumber.number_required)
+        console.log('Required', requiredNumber)
         setInventoryData(inventoryData)
+        setToUpdateRequired(requiredNumber.number_required)
     }
     React.useEffect(() => {
-        getInventoryData()
+        getData()
     }, [])
 
     const addDevice = async() => {
@@ -139,6 +148,19 @@ const Resource = ({ themeStyles }) => {
         setInventoryData([{id:data[0]?.id,...newData},...inventoryData])
         setOpen(false)
     }
+
+    const updateNumber = async() => {
+        const { data: userData } = await supabaseClient.auth.getUser()
+        const {data, error} = await supabaseClient.from("required_resources").update({
+            number_required : toUpdateRequired
+        }).eq('school_id',userData?.user.id).eq('type',id)
+
+        console.log(error)
+        alert('Required Resources Updated !')
+        setRequiredResources(toUpdateRequired)
+        setOpenRequired(false)
+    }
+
     return (
         <div
             className="min-h-screen"
@@ -147,7 +169,8 @@ const Resource = ({ themeStyles }) => {
             <Navbar />
             <div className="mx-8 pl-6 pr-6 pt-6 pb-2 flex justify-between items-center">
                 <Header text="School Inventory" />
-                <Button text="Download Report" className="text-base" rounded={false} />
+                
+                <Button onClick={()=>{setOpenRequired(true)}} text={`Required  : ${requiredResources}`} className="text-base" rounded={true} />
             </div>
             <Subtitle text="Manage and monitor the school resources." />
             <div className="flex justify-center align-center my-8">
@@ -205,6 +228,25 @@ const Resource = ({ themeStyles }) => {
                     </div>
                 </div>
             </AddResourceModal>
+            <RequiredModal open={openRequired} onClose={() => {
+                setOpenRequired(false)
+            }}>
+            <div >
+                    <div className="pb-2 text-xl">
+                        <b className="text-xl">Edit Required Resources : {ResourceType[id]}</b>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <div className="pr-4">Number</div>
+                        <TextField variant="outlined" type="number" defaultValue={toUpdateRequired} size="small" onChange={(e)=>{
+                            setToUpdateRequired(e.target.value)
+                        }}/>
+                    </div>
+                    
+                    <div className="mt-4">
+                        <Button onClick={updateNumber} text={`Update Number`} />
+                    </div>
+                </div>
+            </RequiredModal>
         </div>
 
     );
