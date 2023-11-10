@@ -30,16 +30,56 @@ import {
 
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { useHistory } from 'react-router-dom';
+import supabaseClient from "./utils/supabase";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Dashboard({ themeStyles }) {
+  const [schoolData, setSchoolData] = React.useState()
+  const [inventoryData, setInventoryData] = React.useState([])
+  const [requiredResources, setRequiredResources] = React.useState([])
+  const getSchoolData = async () => {
+    const { data: userData } = await supabaseClient.auth.getUser()
+    const { data: schoolData } = await supabaseClient.from("school").select("*").eq("email", userData?.user.email).single()
+    const { data: inventoryData } = await supabaseClient.from("resource").select("type").eq("school_id", userData?.user.id)
+    const { data: requiredResources } = await supabaseClient.from("required_resources").select("*").eq("school_id", userData?.user.id)
+    setSchoolData(schoolData)
+    setInventoryData(inventoryData)
+    setRequiredResources(requiredResources)
+    console.log(requiredResources)
+  }
+
+  React.useEffect(() => {
+    getSchoolData()
+  }, [])
   const colors = useColorContext();
 
+  const dataCounter = (data, typeTarget) => {
+    return data.filter((data) => {
+      return data.type == typeTarget
+    }).length
+  }
+
+  const getRequired = (data, typeTarget) => {
+    let number = 0
+      data.forEach(element => {
+         if(element.type == typeTarget){
+          number = element.number_required
+         }
+      });
+      return number
+  }
   const data = {
     labels: ["Laptop", "Tablet", "Smartphone", "Teacher", "IT Technician"],
     datasets: [
       {
-        data: [10, 20, 30, 30, 20],
+        data: [
+          dataCounter(inventoryData, 1),
+          dataCounter(inventoryData, 2),
+          dataCounter(inventoryData, 3),
+          dataCounter(inventoryData, 4),
+          dataCounter(inventoryData, 5)
+        ],
         backgroundColor: [
           colors.PieBlue,
           colors.PieBabyBlue,
@@ -65,6 +105,7 @@ function Dashboard({ themeStyles }) {
       },
     },
   };
+
 
   return (
     <div
@@ -93,30 +134,29 @@ function Dashboard({ themeStyles }) {
           >
             <div className="flex justify-center items-center">
               <img
-                src={petaling1}
+                src={schoolData?.image}
                 className="w-auto h-48 p-10"
                 alt="School Logo"
               />
             </div>
             <div className="col-span-4 p-6 grid grid-rows-3">
               <h1 className="text-4xl font-bold">
-                Sekolah Kebangsaan Petaling 1
+                {schoolData?.name}
               </h1>
 
               <div className="grid grid-cols-3">
                 <p className="col-span-2 text-sm text-gray-700 font-medium">
                   <h1 className="font-bold text-gray-700 text-base">Address</h1>
-                  Km 3, Taman Primadona Dua, Off Jalan Prima Lama, Kuala Lumpur,
-                  Malaysia
+                  {schoolData?.location}
                 </p>
                 <p className="font-bold text-right pr-8">📍 3.5 km</p>
               </div>
               <div className="grid grid-cols-2 font-medium text-gray-700 text-sm mt-3">
                 <div>
-                  <p>📧 skpetalingsatu@moe.edu.my</p>
+                  <p>📧 {schoolData?.email}</p>
                 </div>
                 <div>
-                  <p>📞 +6012-345678</p>
+                  <p>📞 {schoolData?.phone}</p>
                 </div>
               </div>
             </div>
@@ -190,36 +230,50 @@ function Dashboard({ themeStyles }) {
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current="12" required="15" />
-            </ClickableCard>
-            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current="15" required="12" />
-            </ClickableCard>
-            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard
-                icon={smartphone}
-                iconTitle="SMARTPHONE"
-                width="140" current="72" required="67"
-              />
-            </ClickableCard>
+            <a href="resource/1">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 1)>=getRequired(requiredResources,1)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                <ResourceCard icon={laptop} iconTitle="LAPTOP" width="150" current={dataCounter(inventoryData, 1)} required={getRequired(requiredResources,1)} />
+              </ClickableCard>
+            </a>
+            <a href="resource/2">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 2)>=getRequired(requiredResources,2)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                <ResourceCard icon={tablet} iconTitle="TABLET" width="140" current={dataCounter(inventoryData, 2)} required={getRequired(requiredResources,2)} />
+              </ClickableCard>
+            </a>
+            <a href="resource/3">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 3)>=getRequired(requiredResources,3)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                <ResourceCard
+                  icon={smartphone}
+                  iconTitle="SMARTPHONE"
+                  width="140" current={dataCounter(inventoryData, 3)} required={getRequired(requiredResources,3)}
+                />
+              </ClickableCard>
+            </a>
+
+
+
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <ClickableCard className="border-4 border-[#da3801] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard
-                icon={itteacher}
-                iconTitle="IT TEACHER"
-                width="140" current="11" required="13"
-              />
-            </ClickableCard>
-            <ClickableCard className="border-4 border-[#00b294] hover:bg-[#E1DFF6] hover:cursor-pointer">
-              <ResourceCard
-                icon={ittechnician}
-                iconTitle="IT TECHNICIAN"
-                width="140" current="17" required="17"
-              />
-            </ClickableCard>
+            <a href="resource/4">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 4)>=getRequired(requiredResources,4)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                <ResourceCard
+                  icon={itteacher}
+                  iconTitle="IT TEACHER"
+                  width="140" current={dataCounter(inventoryData, 4)} required={getRequired(requiredResources,4)}
+                />
+              </ClickableCard>
+            </a>
+            <a href="resource/5">
+              <ClickableCard className={`border-4 ${dataCounter(inventoryData, 5)>=getRequired(requiredResources,5)? ('border-[#00b294]'):('border-[#da3801]')} hover:bg-[#E1DFF6] hover:cursor-pointer`}>
+                <ResourceCard
+                  icon={ittechnician}
+                  iconTitle="IT TECHNICIAN"
+                  width="140" current={dataCounter(inventoryData, 5)} required={getRequired(requiredResources,5)}
+                />
+              </ClickableCard>
+            </a>
+
           </div>
         </div>
         <Card className="mb-4">

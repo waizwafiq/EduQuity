@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import {
   Login,
 
-  Dashboard, Request, RequestLog,
+  Dashboard, Request, RequestLog, Resource,
 
 
   _404
@@ -49,7 +49,7 @@ function App() {
             <Route exact path="/" element={<Dashboard />}  />
             <Route exact path="/request" element={<Request />} />
             <Route exact path="/request_log" element={<RequestLog />} />
-  
+            <Route exact path="/resource/:id" element={<Resource />} />
   
   
             {/* 404 PAGE */}
