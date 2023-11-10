@@ -237,7 +237,7 @@ const Resource = ({ themeStyles }) => {
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="pr-4">Number</div>
-                        <TextField variant="outlined" type="number" defaultValue={toUpdateRequired} size="small" onChange={(e)=>{
+                        <TextField variant="outlined" type="number" value={toUpdateRequired} size="small" onChange={(e)=>{
                             setToUpdateRequired(e.target.value)
                         }}/>
                     </div>
