@@ -20,11 +20,14 @@ function ClickableCard2({ children, className, newLog, type }) {
 
   const submit = async () => {
     newLog.resource = type
+    console.log(newLog)
     const { data, error } = await supabaseClient.from("request_log").insert(
       newLog
     )
+
+    alert('Your request had been sent')
+      console.log(data)
     setShow(false)
-    console.log(error)
   }
   return (
     <>
